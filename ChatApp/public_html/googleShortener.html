@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <script src="js/vendor/angular.js/angular.js" type="text/javascript"></script>
+        <!--script type="text/javascript">
+            function makeShort()
+            {
+                var longUrl = document.getElementById("longurl").value;
+                var request = gapi.client.urlshortener.url.insert({
+                    'resource': {
+                        'longUrl': longUrl
+                    }
+                });
+                request.execute(function (response)
+                {
+
+                    if (response.id != null)
+                    {
+                        str = "<b>Long URL:</b>" + longUrl + "<br>";
+                        str += "<b>Short URL:</b> <a href='" + response.id + "'>" + response.id + "</a><br>";
+                        document.getElementById("output").innerHTML = str;
+                    }
+                    else
+                    {
+                        alert("error: creating short url");
+                    }
+
+                });
+            }
+
+            function getShortInfo()
+            {
+                var shortUrl = document.getElementById("shorturl").value;
+
+                var request = gapi.client.urlshortener.url.get({
+                    'shortUrl': shortUrl,
+                    'projection': 'FULL'
+                });
+                request.execute(function (response)
+                {
+
+                    if (response.longUrl != null)
+                    {
+                        str = "<b>Long URL:</b>" + response.longUrl + "<br>";
+                        str += "<b>Create On:</b>" + response.created + "<br>";
+                        document.getElementById("output").innerHTML = str;
+                    }
+                    else
+                    {
+                        alert("error: unable to get URL information");
+                    }
+
+                });
+
+            }
+            function load()
+            {
+                gapi.client.setApiKey('AIzaSyA04dm4wN9jiKrmngzDu0WQiBPrvahfPVA'); //get your ownn Browser API KEY
+                gapi.client.load('urlshortener', 'v1', function () {
+                });
+
+            }
+            window.onload = load;
+
+        </script-->
+        <script src="https://apis.google.com/js/client.js"></script>
+    </head>
+    <body >
+        <div ng-app="myApp" ng-controller="shortenCtrl" ng-init="load()">
+            URL: <input type="text" id="longurl" name="url" value="http://www.hayageek.com" /> <br/>
+            <input type="button" value="Create Short" ng-click="makeShort();" /> <br/> <br/>
+
+            URL: <input type="text" id="shorturl" name="url" value="http://www.hayageek.com" /> <br/>
+            <input type="button" value="Get Short  URL Info" onclick="getShortInfo();" />
+
+            <div id="output"></div>
+
+
+
+        </div>
+
+        <!--script>
+var app = angular.module('myApp', []);
+app.controller('shortenCtrl', function($scope) {
+    window.alert('Directions request failed due to ');
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+});
+</script-->
+
+        <script>
+
+            var app = angular.module('myApp', []);
+            //window.alert('Directions request failed due to ');
+            app.controller('shortenCtrl', function ($scope) {
+                // window.alert('Directions request failed due to ');
+
+//        $scope.makeShort =function(){
+//            
+//            //window.alert('Directions request failed due to ');
+//                     
+//        };
+
+//                $scope.load = function ()
+//                {
+//                    //alert("hoee");
+//                    gapi.client.setApiKey('AIzaSyA04dm4wN9jiKrmngzDu0WQiBPrvahfPVA'); //get your ownn Browser API KEY
+//                    gapi.client.load('urlshortener', 'v1', function () {
+//                    });
+//
+//                };
+
+
+                $scope.makeShort = function ()
+                {
+                   
+                    var longUrl = "http://www.hayageek.com";
+                    //alert("hoee");
+                    var request = gapi.client.urlshortener.url.insert({
+                        'resource': {
+                            'longUrl': longUrl
+                           
+                        }
+                        
+                    });
+                    
+                    request.execute(function (response)
+                    {
+//alert("hoee");
+                        if (response.id != null)
+                        {
+                            str = "<b>Long URL:</b>" + longUrl + "<br>";
+                            str += "<b>Short URL:</b> <a href='" + response.id + "'>" + response.id + "</a><br>";
+                            document.getElementById("output").innerHTML = str;
+                        }
+                        else
+                        {
+                            alert("error: creating short url");
+                        }
+
+                    });
+                };
+
+            angular.element(document).ready(function () {
+               gapi.client.setApiKey('AIzaSyA04dm4wN9jiKrmngzDu0WQiBPrvahfPVA'); //get your ownn Browser API KEY
+                gapi.client.load('urlshortener', 'v1', function () {
+                });
+    });
+            });
+            
+ 
+//            function load()
+//            {
+//        
+//       gapi.client.setApiKey('AIzaSyA04dm4wN9jiKrmngzDu0WQiBPrvahfPVA'); //get your ownn Browser API KEY
+//                gapi.client.load('urlshortener', 'v1', function () {
+//                });
+//           }
+//           window.onload = load;
+        </script>
+    </body>
+
+</html>

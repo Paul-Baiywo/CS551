@@ -51,7 +51,7 @@
         async defer></script>
     </head>
     <body>
-       
+
         <div id="floating-panel" ng-app="myMap" ng-controller="mapCtrl">
             <div>
                 <h2>Welcome:{{myName}}</h2>
@@ -83,7 +83,7 @@
                     <p> <strong >Current:{{startCurrent}}<sup>0</sup>F</strong></br> <span >Min:{{startMin}}<sup>0</sup>F</span>
                         <span >Max:{{startMax}}<sup>0</sup>F</span>
                     </p>
-                  
+
 
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 col-lg-offset-1">
@@ -92,18 +92,20 @@
                     <p> <strong >Current:{{endCurrent}}<sup>0</sup>F</strong></br> <span>Min:{{endMin}}<sup>0</sup>F  </span>
                         <span >Max:{{endMax}} <sup>0</sup>F</span>
                     </p>
-                   
+
                 </div>
             </div>
         </div>
 
         <script>
-            var directionsService;
-            var directionsDisplay;
+         var directionsService;
+          var directionsDisplay;
+                
             function initMap() {
-                directionsService = new google.maps.DirectionsService;
-                directionsDisplay = new google.maps.DirectionsRenderer;
-                var Kansas = new google.maps.LatLng(38.5000, -98.0000);
+                   directionsService = new google.maps.DirectionsService;
+                 directionsDisplay = new google.maps.DirectionsRenderer;
+                   var Kansas = new google.maps.LatLng(38.5000, -98.0000);
+                
                 var mapOptions = {
                     zoom: 7,
                     center: Kansas
@@ -123,7 +125,9 @@
 
             app.controller('mapCtrl', function ($scope, Data) {
                 $scope.Data = Data;
-$scope.myName=localStorage.getItem("lastname");
+                $scope.myName = localStorage.getItem("lastname");
+                
+                
                 $scope.calcRoute = function () {
                     //calculateAndDisplayRoute(directionsService, directionsDisplay);
                     //window.alert('Directions request failed due to ');
@@ -160,7 +164,7 @@ $scope.myName=localStorage.getItem("lastname");
                 });
                 $scope.startWeather = function () {
 
-                  $http.get(baseUrl + $scope.Data.start+"&units=imperial")
+                    $http.get(baseUrl + $scope.Data.start + "&units=imperial")
                             .success(function (response) {
 
                                 // $scope.img = response.weather[0].icon;
@@ -168,12 +172,12 @@ $scope.myName=localStorage.getItem("lastname");
                                 $scope.startCurrent = response.main.temp;
                                 $scope.startMin = response.main.temp_min;
                                 $scope.startMax = response.main.temp_max;
-             
+
                             });
                 };
                 $scope.endWeather = function () {
 
-                    $http.get(baseUrl + $scope.Data.end+"&units=imperial")
+                    $http.get(baseUrl + $scope.Data.end + "&units=imperial")
                             .success(function (response) {
 
 
