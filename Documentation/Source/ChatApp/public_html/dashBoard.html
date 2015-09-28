@@ -40,6 +40,10 @@
                 height:128px;
                 width: 128px;
             }
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
 
         </style>
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
@@ -51,30 +55,51 @@
         async defer></script>
     </head>
     <body>
-
-        <div id="floating-panel" ng-app="myMap" ng-controller="mapCtrl">
-            <div>
-                <h2>Welcome:{{myName}}</h2>
-            </div>
-            <b>Start: </b>
-            <input type="text" ng-model="Data.start"   >
-
-            <b>End: </b>
-            <input type="text"  ng-model="Data.end" ng-change="endWeather()" >
-            <button type="submit" class="btn btn-success"  ng-click="calcRoute()" >Get Directions</button>
-
-            <div>
-                <div  class="row" style="">
-                    <div  id="map"  class="col-md-8 col-xs-12 col-lg-9 col-sm-12" >         
-                    </div>  
-                    <div id="mapList" class="col-md-4 col-lg-3 col-xs-12 col-sm-12 " >
-
+        
+         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" >
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">ChatApp</a>
                     </div>
+                    <div id="navbar" class="navbar-collapse collapse" >
+                       
+                    </div><!--/.navbar-collapse -->
+                </div>
+            </nav>
+        <div></div>
+
+        <div id="floating-panel"   ng-app="myApp"  ng-init="load()" class="container">
+             
+           
+            <div ng-controller="mapCtrl">
+               
+                 <div class="top-left row" style="margin: auto">    <h2>Welcome:{{myName}}</h2>
+                
+                <b>Start: </b>
+                <input type="text" ng-model="Data.start"   >
+
+                <b>End: </b>
+                <input type="text"  ng-model="Data.end" ng-change="endWeather()" >
+                <button type="submit" class="btn btn-success"  ng-click="calcRoute()" >Get Directions</button>
+  </div>
+                <div>
+                    <div  class="row" style="">
+                        <div  id="map"  class="col-md-8 col-xs-12 col-lg-9 col-sm-12" >         
+                        </div>  
+                        <div id="mapList" class="col-md-4 col-lg-3 col-xs-12 col-sm-12 " >
+
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
-
-
             <div class="row-fluid"  ng-controller="weatherCtrl">
                 <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6" >
                     <h1 >Weather in: {{Data.start}} </h1>
@@ -95,17 +120,35 @@
 
                 </div>
             </div>
+            <div ng-controller="shortenCtrl">
+
+         
+            <div ng-hide="true">{{output}}</div>
+                
+             <div >{{shortUrl}}</div>    
+                <div id="container"></div>
+            </div>
+
+            
         </div>
 
+
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+     
+         <script src="https://apis.google.com/js/client.js"></script>
+   
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+ 
+        
         <script>
-         var directionsService;
-          var directionsDisplay;
-                
+            var directionsService;
+            var directionsDisplay;
+
             function initMap() {
-                   directionsService = new google.maps.DirectionsService;
-                 directionsDisplay = new google.maps.DirectionsRenderer;
-                   var Kansas = new google.maps.LatLng(38.5000, -98.0000);
-                
+                directionsService = new google.maps.DirectionsService;
+                directionsDisplay = new google.maps.DirectionsRenderer;
+                var Kansas = new google.maps.LatLng(38.5000, -98.0000);
+
                 var mapOptions = {
                     zoom: 7,
                     center: Kansas
@@ -114,9 +157,8 @@
                 directionsDisplay.setMap(map);
                 directionsDisplay.setPanel(document.getElementById('mapList'));
 
-
             }
-            var app = angular.module('myMap', []);
+            var app = angular.module('myApp', []);
 
             app.factory('Data', function () {
 
@@ -126,19 +168,15 @@
             app.controller('mapCtrl', function ($scope, Data) {
                 $scope.Data = Data;
                 $scope.myName = localStorage.getItem("lastname");
-                
-                
-                $scope.calcRoute = function () {
-                    //calculateAndDisplayRoute(directionsService, directionsDisplay);
-                    //window.alert('Directions request failed due to ');
 
+                $scope.calcRoute = function () {
+                    
                     directionsService.route({
                         origin: $scope.Data.start.toString(),
                         destination: $scope.Data.end.toString(),
                         travelMode: google.maps.TravelMode.DRIVING
                     }, function (response, status) {
                         if (status === google.maps.DirectionsStatus.OK) {
-                            //window.alert('Directions request failed due to ');
                             directionsDisplay.setDirections(response);
                         } else {
                             window.alert('Directions request failed due to ' + status);
@@ -154,7 +192,6 @@
                 $scope.Data = Data;
                 var baseUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
                 var imgUrl = "http://openweathermap.org/img/w/"
-                //api.openweathermap.org/data/2.5/find?q=London&units=imperial
 
                 $scope.$watch('Data.start', function () {
                     $scope.startWeather();
@@ -167,7 +204,7 @@
                     $http.get(baseUrl + $scope.Data.start + "&units=imperial")
                             .success(function (response) {
 
-                                // $scope.img = response.weather[0].icon;
+
                                 document.getElementById("startIcon").src = "" + imgUrl + response.weather[0].icon + ".png";
                                 $scope.startCurrent = response.main.temp;
                                 $scope.startMin = response.main.temp_min;
@@ -189,8 +226,78 @@
                             });
                 };
 
-
             });
+
+          app.controller('shortenCtrl', function ($scope) {
+                    var longUrl = "";
+                    $scope.makeShort = function ()
+                    {
+
+                        var request = gapi.client.urlshortener.url.insert({
+                            'resource': {
+                                'longUrl': longUrl
+
+                            }
+
+                        });
+
+                        request.execute(function (response)
+                        {
+
+                            if (response.id != null)
+                            {
+                                   $scope.output = response.id;
+
+
+                                twttr.widgets.createShareButton(
+                                        '/',
+                                        document.getElementById('container'),
+                                        {
+                                            text: response.id
+                                        }
+                                );
+
+                                // $scope.getLocation();
+                            }
+                            else
+                            {
+                                alert("error: creating short url");
+                            }
+
+                        });
+                    };
+                    var mapUrl = "http://maps.google.com/maps?q=";
+
+                    $scope.getLocation = function () {
+                        
+                     if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function (position) {
+                                $scope.$apply(function () {
+
+                                    longUrl = mapUrl = mapUrl + position.coords.latitude + "," + position.coords.longitude;
+                                    $scope.output = longUrl;
+                                    
+$scope.makeShort();
+                                });
+                            });
+                        } else {
+                            alert("Geolocation is not supported by this browser.");
+                        }
+
+                    };
+                    $scope.$watch('output', function () {
+                        $scope.getLocation();
+                    });
+                    $scope.$watch('shortUrl', function () {
+                        $scope.makeShort();
+                    });
+                    angular.element(document).ready(function () {
+                        gapi.client.setApiKey('AIzaSyA04dm4wN9jiKrmngzDu0WQiBPrvahfPVA'); //get your own Browser API KEY
+                        gapi.client.load('urlshortener', 'v1', function () {
+                        });
+                    });
+                });
+
         </script>
 
 
